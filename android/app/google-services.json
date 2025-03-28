@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "912664789847",
+    "project_id": "procg-a924f",
+    "storage_bucket": "procg-a924f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912664789847:android:132a6e97d420e45637f412",
+        "android_client_info": {
+          "package_name": "com.procg"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIMgl1szomt7608n9fwB8IWds24u1AxdM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

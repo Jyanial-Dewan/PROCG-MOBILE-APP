@@ -1,0 +1,24 @@
+export type RootStackScreensParms = {
+  Loader: undefined | {delay?: number; text?: string};
+  Drawer: undefined;
+  Login: undefined;
+  HomeScreen: undefined;
+  ProfileScreen: undefined;
+  NotificationDetails: undefined;
+  ScanLoginQrCode: undefined;
+  ChooseConnection: undefined;
+  AddConnection: undefined;
+  ScanQrConnection: undefined;
+  ScanProfiles: undefined;
+  Profiles: undefined;
+  Notifications: undefined;
+  Inbox: undefined;
+  Sent: undefined;
+  Drafts: undefined;
+  Recycle_Bin: undefined;
+  Settings: undefined;
+  New_Message: undefined;
+  Reply: {_id: string};
+  Drafts_Detail: {_id: string};
+  Recycle_Bin_Detail: {_id: string};
+};

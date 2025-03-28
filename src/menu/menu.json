@@ -1,0 +1,40 @@
+[
+  {
+    "submenu": "Finance",
+    "submenuIcon": "/sidebar/finance.svg",
+
+    "menuItems": [
+      {
+        "name": "Risk Management",
+        "routeName": "Risk_Management"
+      },
+      {
+        "name": "Control Management",
+        "routeName": "Control_Management"
+      },
+      {
+        "name": "Issue Management",
+        "routeName": "Issue_Management"
+      }
+    ]
+  },
+  {
+    "submenu": "Tools",
+    "submenuIcon": "/sidebar/continuous-monitoring.svg",
+    "menuItems": [
+      {
+        "name": "Security Console",
+        "subItems": [
+          {
+            "name": "Manage Users",
+            "routeName": "Manage_Users"
+          }
+        ]
+      },
+      {
+        "name": "Manage Data Sources",
+        "routeName": "Manage_Data_Sources"
+      }
+    ]
+  }
+]
