@@ -102,7 +102,9 @@ const RenderMessageItem = ({
           }
         });
       } else {
-        translateX.value = withSpring(0);
+        translateX.value = withSpring(0, {
+          duration: 1,
+        });
       }
     });
   const animatedStyle = useAnimatedStyle(() => {
@@ -119,6 +121,7 @@ const RenderMessageItem = ({
   const height = useAnimatedStyle(() => {
     return {
       height: scaleX.value,
+      marginVertical: marginY.value,
     };
   });
 
@@ -286,8 +289,18 @@ const DraftScreen = observer(() => {
         return;
       }
     },
-    [isFocused, currentPage, messageStore.draftMessages.length],
+    [
+      isFocused,
+      currentPage,
+      messageStore.draftMessages.length,
+      messageStore.refreshing,
+    ],
   );
+
+  const handleRefresh = () => {
+    messageStore.setRefreshing(true);
+    setCurrentPage(1);
+  };
 
   const handlePress = async (msgId: string, parentId: string) => {
     if (isLongPressed) {
@@ -402,9 +415,9 @@ const DraftScreen = observer(() => {
         )
       }
       style={styles.container}>
+      <MessageGroups />
       <CustomFlatList
         key={messageStore.draftMessages.length}
-        headerComponent={MessageGroups}
         data={messageStore.draftMessages}
         RenderItems={({item}: any) => (
           <RenderMessageItem
@@ -426,6 +439,8 @@ const DraftScreen = observer(() => {
         contentContainerStyle={
           messageStore.draftMessages.length === 0 ? styles.flexGrow : null
         }
+        refreshing={messageStore.refreshing}
+        onRefresh={handleRefresh}
       />
       <PlusButton />
     </ContainerNew>

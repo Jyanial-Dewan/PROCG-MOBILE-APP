@@ -23,6 +23,8 @@ import NewMessage from '../modules/new-message/NewMessage';
 import DraftsDetails from '../modules/drafts-details/DraftsDetailt';
 import RecycleBinDetail from '../modules/notification/RecycleBinDetail';
 import ReplyScreen from '../modules/reply/ReplyScree';
+import ViewRequestsScreen from '../modules/view-requests/ViewRequestsScreen';
+import RunARequestScreen from '../modules/run-a-request/RunARequestScreen';
 
 export type DrawerScreensParams = {
   //
@@ -57,6 +59,8 @@ const Drawer = () => {
       <Screen name="Drafts_Detail" component={DraftsDetails} />
       <Screen name="Recycle_Bin_Detail" component={RecycleBinDetail} />
       <Screen name="Reply" component={ReplyScreen} />
+      <Screen name="View_Requests" component={ViewRequestsScreen} />
+      <Screen name="Run_a_Request" component={RunARequestScreen} />
     </Navigator>
   );
 };

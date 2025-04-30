@@ -18,6 +18,8 @@ import {formateDateTime} from '../../common/services/dateFormater';
 import ReplyButton from '../../common/components/ReplyButton';
 import Receivers from '../../common/components/Receivers';
 import {useSocketContext} from '../../context/SocketContext';
+import Autolink from 'react-native-autolink';
+import {ActivityIndicator} from 'react-native-paper';
 
 interface User {
   name: string;
@@ -38,7 +40,6 @@ const NotificationDetails = observer(() => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [imageError, setImageError] = useState(false);
   const [recivers, setRecivers] = useState<User[]>([]);
   const [parrentMessage, setParrentMessage] = useState<any>();
   const {datePart, timePart} = formateDateTime(parrentMessage?.date);
@@ -199,11 +200,17 @@ const NotificationDetails = observer(() => {
             </View>
           </View>
           {/* Body Section */}
-          <CustomTextNew
+          <Autolink
+            text={item.body}
+            style={styles.bodyText}
+            mention="instagram"
+            textProps={{selectionColor: 'blue'}}
+          />
+          {/* <CustomTextNew
             txtStyle={styles.bodyText}
             txtAlign="justify"
             text={item?.body}
-          />
+          /> */}
           <View style={styles.itemListWrapper} />
         </View>
         <Receivers
@@ -220,21 +227,27 @@ const NotificationDetails = observer(() => {
       style={styles.container}
       header={<MainHeader routeName={'Message_Details'} />}
       isScrollView={false}>
-      <CustomTextNew
-        text={parrentMessage?.subject}
-        txtColor={COLORS.black}
-        txtSize={14}
-        txtWeight={'600'}
-        lineHight={16}
-      />
-      <View style={styles.itemListWrapper} />
+      {isLoading ? (
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      ) : (
+        <>
+          <CustomTextNew
+            text={parrentMessage?.subject}
+            txtColor={COLORS.black}
+            txtSize={14}
+            txtWeight={'600'}
+            lineHight={16}
+          />
+          <View style={styles.itemListWrapper} />
 
-      <CustomFlatList
-        data={totalMessages}
-        RenderItems={renderItem}
-        isLoading={isLoading}
-      />
-      <ReplyButton parentId={_id} />
+          <CustomFlatList
+            data={totalMessages}
+            RenderItems={renderItem}
+            isLoading={isLoading}
+          />
+          <ReplyButton parentId={_id} />
+        </>
+      )}
     </ContainerNew>
   );
 });

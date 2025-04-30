@@ -98,7 +98,9 @@ const RenderMessageItem = observer(
             }
           });
         } else {
-          translateX.value = withSpring(0);
+          translateX.value = withSpring(0, {
+            duration: 1,
+          });
         }
       });
     const animatedStyle = useAnimatedStyle(() => {
@@ -115,6 +117,7 @@ const RenderMessageItem = observer(
     const height = useAnimatedStyle(() => {
       return {
         height: scaleX.value,
+        marginVertical: marginY.value,
       };
     });
 
@@ -280,6 +283,11 @@ const RecycleBin = observer(() => {
     [isFocused, currentPage, messageStore.binMessages.length],
   );
 
+  const handleRefresh = () => {
+    messageStore.setRefreshing(true);
+    setCurrentPage(1);
+  };
+
   const handlePress = async (msgId: string, parentId: string) => {
     if (isLongPressed) {
       setSelectedIds(prev => [msgId, ...prev]);
@@ -435,9 +443,9 @@ const RecycleBin = observer(() => {
         )
       }
       style={styles.container}>
+      <MessageGroups />
       <CustomFlatList
         key={messageStore.binMessages.length}
-        headerComponent={MessageGroups}
         data={messageStore.binMessages}
         numColumns={1}
         RenderItems={({item}: any) => (
@@ -458,6 +466,8 @@ const RecycleBin = observer(() => {
           messageStore.binMessages.length === 0 ? styles.flexGrow : null
         }
         emptyItem={EmptyListItem}
+        refreshing={messageStore.refreshing}
+        onRefresh={handleRefresh}
       />
       <PlusButton />
       <CustomDeleteModal

@@ -20,6 +20,7 @@ import NotebookPen from '../../assets/Icons/notebook-pen.svg';
 import ArrowLeftIcon from '../../assets/Icons/arrow-left.svg';
 import PlusIcon from '../../assets/Icons/plus.svg';
 import QRIcon from '../../assets/Icons/qr.svg';
+import SearchIcon from '../../assets/Icons/search.svg';
 
 interface SVGControllerProps {
   name: string;
@@ -79,6 +80,8 @@ const SVGController = ({
         return <PlusIcon width={width} height={height} color={color} />;
       case 'QR':
         return <QRIcon width={width} height={height} color={color} />;
+      case 'SEARCH':
+        return <SearchIcon width={width} height={height} color={color} />;
 
       default:
         return <BellIcon width={width} height={height} color={color} />;

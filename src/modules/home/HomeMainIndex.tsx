@@ -21,6 +21,8 @@ import messaging from '@react-native-firebase/messaging';
 import SVGController from '../../common/components/SVGController';
 import Image from 'react-native-image-fallback';
 import {useSocketContext} from '../../context/SocketContext';
+import {Profile} from '../../common/components/custom-drawer';
+import {useDrawerStatus} from '@react-navigation/drawer';
 
 const edges: Edge[] = ['right', 'left'];
 const wait = (timeout: any) => {
@@ -28,8 +30,6 @@ const wait = (timeout: any) => {
 };
 
 const HomeMainIndex = () => {
-  const navigation = useNavigation();
-
   const {
     userInfo,
     hydrate,
@@ -39,26 +39,35 @@ const HomeMainIndex = () => {
     fcmTokenSave,
     fcmToken,
     selectedUrl,
+    menuStore,
   } = useRootStore();
+  const navigation = useNavigation();
+  const drawerStatus = useDrawerStatus();
   const {socket} = useSocketContext();
-  const [isScanShow, setIsScanShow] = useState(false);
   const isFocused = useIsFocused();
   const [isLoading, setIsLoading] = useState(false);
+  const [profilePhoto, setProfilePhoto] = useState<Profile>();
   const url = selectedUrl || ProcgURL;
-  const source = {
-    uri: `${url}/${userInfo?.profile_picture.original}`,
-    headers: {
-      Authorization: `Bearer ${userInfo?.access_token}`,
-    },
-  };
 
   const fallbacks = [require('../../assets/prifileImages/profile.jpg')];
 
-  // const getFCMToken = async () => {
-  //   const token = await messaging().getToken();
-  //   fcmTokenSave({fcmToken: token});
-  //   console.log('FCM Token:', token);
-  // };
+  // fetch unique user
+  useAsyncEffect(
+    async isMounted => {
+      if (!isMounted()) {
+        return null;
+      }
+      const api_params = {
+        url: api.Users + `/${userInfo?.user_id}`,
+        baseURL: url,
+        // isConsole: true,
+        // isConsoleParams: true,
+      };
+      const res = await httpRequest(api_params, setIsLoading);
+      setProfilePhoto({uri: `${url}/${res.profile_picture.original}`});
+    },
+    [isFocused, drawerStatus],
+  );
 
   //Post_Notification Permission
   useEffect(() => {
@@ -110,14 +119,27 @@ const HomeMainIndex = () => {
     [isFocused],
   );
 
-  //Scket Connection
-  useEffect(() => {
-    // hydrate();
-    // if (userInfo?.user_name) {
-    //   connectSocket(userInfo?.user_name);
-    //   socket?.connect();
-    // }
+  //Fetch Menu
+  useAsyncEffect(
+    async isMounted => {
+      if (!isMounted()) {
+        return null;
+      }
+      const api_params = {
+        url: api.GetMenu,
+        baseURL: url,
+        // isConsole: true,
+        // isConsoleParams: true,
+      };
+      const res = await httpRequest(api_params, setIsLoading);
+      console.log(res[0].menu_structure, 'homemaineindex 121');
+      menuStore?.saveMobileMenu(res[0].menu_structure);
+    },
+    [isFocused],
+  );
 
+  //Socket Connection
+  useEffect(() => {
     socket?.on('inactiveDevice', data => {
       socket.disconnect();
       if (deviceInfoData && deviceInfoData.id === data.id) {
@@ -126,11 +148,9 @@ const HomeMainIndex = () => {
         navigation.navigate('Login');
       }
     });
-    // if (socket) {
-    // }
+
     return () => {
       socket?.off('inactiveDevice');
-      // socket?.disconnect();
     };
   }, [socket]);
 
@@ -142,7 +162,7 @@ const HomeMainIndex = () => {
           style={{flexDirection: 'row', gap: 4, alignItems: 'center'}}>
           <Image
             style={styles.profileImage}
-            source={source}
+            source={{uri: profilePhoto?.uri}}
             fallback={fallbacks}
           />
           <View>

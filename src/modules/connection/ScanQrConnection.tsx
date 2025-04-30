@@ -2,7 +2,6 @@ import {StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
 import ContainerNew from '../../common/components/Container';
 import MainHeader from '../../common/components/MainHeader';
-import {useForm} from 'react-hook-form';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {observer} from 'mobx-react-lite';
 import {useRootStore} from '../../stores/rootStore';

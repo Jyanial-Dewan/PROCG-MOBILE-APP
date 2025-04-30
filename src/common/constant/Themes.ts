@@ -50,6 +50,7 @@ export const COLORS = {
   yellow: '#FFC014',
   orange: '#FF7821',
   green: '#7DD63C',
+  successColor: '#0BA503',
   lightYellow: '#FFCC00',
   lightBlue: '#EAEDFF',
   lightBlack: '#7A7A7A',

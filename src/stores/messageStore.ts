@@ -1,24 +1,14 @@
-import {
-  applySnapshot,
-  getSnapshot,
-  Instance,
-  SnapshotOut,
-  types,
-} from 'mobx-state-tree';
-import {MMKV} from 'react-native-mmkv';
+import {getSnapshot, Instance, SnapshotOut, types} from 'mobx-state-tree';
 
 const userModeL = types.model('userModel', {
   name: types.string,
   profile_picture: types.string,
 });
 
-const storage = new MMKV();
-
 export const MessageModel = types.model('messageModel', {
   id: types.string,
   sender: userModeL,
   recivers: types.array(userModeL),
-
   subject: types.string,
   body: types.maybeNull(types.string),
   date: types.Date,

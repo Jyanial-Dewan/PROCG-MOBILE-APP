@@ -2,13 +2,11 @@ import {
   Modal,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
-import FastImage from 'react-native-fast-image';
+import React from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import {ProcgURL} from '../../../App';
 import {useRootStore} from '../../stores/rootStore';

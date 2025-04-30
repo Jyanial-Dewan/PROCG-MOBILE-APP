@@ -7,7 +7,6 @@ import CustomInputNew from '../../common/components/CustomInput';
 import {useForm, useFormState} from 'react-hook-form';
 import {COLORS} from '../../common/constant/Themes';
 import CustomButtonNew from '../../common/components/CustomButton';
-import Images from '../../common/constant/Images';
 import {RootStackScreenProps} from '~/navigations/RootStack';
 import {useRootStore} from '../../stores/rootStore';
 import {observer} from 'mobx-react-lite';
@@ -24,10 +23,9 @@ const initValue = {
 const AddConnection = observer<RootStackScreenProps<'AddConnection'>>(
   ({navigation}) => {
     const rootStore = useRootStore();
-    const {control, handleSubmit, register, setValue, reset, getFieldState} =
-      useForm({
-        defaultValues: initValue,
-      });
+    const {control, handleSubmit, setValue} = useForm({
+      defaultValues: initValue,
+    });
     const {isDirty} = useFormState({control});
 
     const onSubmit = (data: PayloadType) => {

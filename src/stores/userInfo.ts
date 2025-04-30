@@ -1,4 +1,5 @@
 import {Instance, SnapshotOut, types} from 'mobx-state-tree';
+import {UserModel, UserSnapshotType} from './usersStore';
 
 const ProfilePictureModel = types.model('ProfilePictureModel', {
   original: types.string,

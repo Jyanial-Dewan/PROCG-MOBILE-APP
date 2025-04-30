@@ -6,18 +6,22 @@ import {
   StyleSheet,
   LayoutAnimation,
   ScrollView,
-  Image,
 } from 'react-native';
-import menuData from '../../menu/menu.json';
+
 import ContainerNew from '../../common/components/Container';
 import MainHeader from '../../common/components/MainHeader';
-import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {COLORS} from '../../common/constant/Themes';
 import SVGController from '../../common/components/SVGController';
+import {useRootStore} from '../../stores/rootStore';
+import {useNavigation} from '@react-navigation/native';
+import {observer} from 'mobx-react-lite';
 
-const MenuMainIndex = () => {
+const MenuMainIndex = observer(() => {
+  const {menuStore} = useRootStore();
+  const menuData = menuStore.menu;
   const [openMenus, setOpenMenus] = useState<{[key: string]: boolean}>({});
+  const navigation = useNavigation();
 
   const toggleMenu = (key: string) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -27,31 +31,52 @@ const MenuMainIndex = () => {
     }));
   };
 
-  const renderMenuItems = (menuItems: any, parentKey: string) => {
-    return menuItems.map((item: any, index: number) => {
+  const renderMenuItems = (
+    subMenus: any[],
+    parentKey: string,
+    level: number = 1,
+  ) => {
+    return subMenus.map((item: any, index: number) => {
       const itemKey = `${parentKey}-${item.name}`;
+
+      const isExpandable = item.menuItems?.length > 0;
+
       return (
         <View key={index} style={styles.menuItem}>
           <TouchableOpacity
-            onPress={() => item.subItems && toggleMenu(itemKey)}
+            onPress={() => {
+              if (isExpandable) {
+                toggleMenu(itemKey);
+              } else if (item.routeName) {
+                navigation.navigate(item.routeName);
+              }
+            }}
             style={[
               styles.menuItemHeader,
-              item.subItems && {backgroundColor: COLORS.lightGray7},
+              isExpandable && {backgroundColor: COLORS.lightGray7},
             ]}>
-            <TouchableOpacity style={{flexDirection: 'row'}}>
-              {!item.subItems && (
-                <Entypo name="dot-single" size={24} color="black" />
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              {!isExpandable && (
+                <Entypo name="dot-single" size={22} color={COLORS.black} />
               )}
-              <Text style={styles.menuText}>{item.name}</Text>
-            </TouchableOpacity>
-            {item.subItems && (
+              <Text
+                style={[styles.menuText, {marginLeft: isExpandable ? 0 : 6}]}>
+                {item.name}
+              </Text>
+            </View>
+
+            {isExpandable && (
               <SVGController name="Chevron-Down" color={COLORS.black} />
             )}
           </TouchableOpacity>
 
-          {item.subItems && openMenus[itemKey] && (
-            <View style={styles.submenuContainer}>
-              {renderMenuItems(item.subItems, itemKey)}
+          {isExpandable && openMenus[itemKey] && (
+            <View
+              style={[
+                styles.submenuContainer,
+                {paddingLeft: level * 12}, // indent deeper levels
+              ]}>
+              {renderMenuItems(item.menuItems, itemKey, level + 1)}
             </View>
           )}
         </View>
@@ -61,7 +86,7 @@ const MenuMainIndex = () => {
 
   return (
     <ContainerNew header={<MainHeader routeName="Menu" />}>
-      <ScrollView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
         {menuData.map((menu, index) => (
           <View key={index} style={styles.menuContainer}>
             <TouchableOpacity
@@ -70,9 +95,10 @@ const MenuMainIndex = () => {
               <Text style={styles.menuTitle}>{menu.submenu}</Text>
               <SVGController name="Chevron-Down" color={COLORS.black} />
             </TouchableOpacity>
+
             {openMenus[menu.submenu] && (
               <View style={styles.menuItemsContainer}>
-                {renderMenuItems(menu.menuItems, menu.submenu)}
+                {renderMenuItems(menu.subMenus, menu.submenu)}
               </View>
             )}
           </View>
@@ -80,7 +106,7 @@ const MenuMainIndex = () => {
       </ScrollView>
     </ContainerNew>
   );
-};
+});
 
 export default MenuMainIndex;
 

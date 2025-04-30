@@ -5,11 +5,10 @@ import {DeviceInfoStore, DeviceInfoStoreType} from './deviceInfo';
 import {MMKV} from 'react-native-mmkv';
 import {secureStorageKey} from '../../App';
 import {MessageStore} from './messageStore';
-import {io, Socket} from 'socket.io-client';
 import {UsersStore} from './usersStore';
+import {MenuStore} from './mobileMenuStore';
 import {FcmTokenStore, FcmTokenType} from '../stores/fcmToken-store';
-
-const storage = new MMKV();
+import {viewRequestStore} from './viewRequestStore';
 
 const RootStore = types
   .model('RootStore', {
@@ -26,27 +25,11 @@ const RootStore = types
     selectedProfile: types.string,
     messageStore: MessageStore,
     fcmToken: types.maybe(FcmTokenStore),
+    menuStore: types.optional(MenuStore, {menu: []}),
+    viewRequestStore: viewRequestStore,
   })
 
-  // .volatile(() => ({
-  //   socket: null as Socket | null, // Non-persistent property for the Socket.IO instance
-  // }))
-
   .actions(self => ({
-    // connectSocket(name: string) {
-    //   if (self.socket) return; // Avoid multiple connections
-
-    //   self.socket = io('wss://procg.viscorp.app', {
-    //     query: {key: name},
-    //     path: '/socket.io/',
-    //     transports: ['websocket'],
-    //   });
-
-    //   self.socket.on('connect', () => {
-    //     console.log('Connected to WebSocket', self.socket?.id);
-    //   });
-    // },
-
     setUserColorScheme(colorScheme: typeof self.userColorScheme | 'auto') {
       if (colorScheme === 'auto') {
         self.userColorScheme = null;
@@ -70,7 +53,6 @@ const RootStore = types
         if (deviceInfo) {
           self.deviceInfoData = deviceInfo;
         }
-
         self.hydrated = true;
       } catch (error) {
         console.error(error);
@@ -126,6 +108,9 @@ const RootStore = types
         totalSent: 0,
         totalDraft: 0,
         totalBin: 0,
+      });
+      applySnapshot(self.viewRequestStore, {
+        requests: [],
       });
     },
     fcmTokenSave(fcmToken: FcmTokenType) {
@@ -190,6 +175,10 @@ const secureStorage = {
   },
   usersStore: {
     users: [],
+  },
+  menuStore: {menu: []},
+  viewRequestStore: {
+    requests: [],
   },
 };
 

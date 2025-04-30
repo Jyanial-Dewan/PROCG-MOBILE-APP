@@ -1,5 +1,6 @@
 import {api} from './api';
 const withoutEncryptionApi = [
+  api.ProfilePhoto,
   api.AuthAppsLogin,
   api.AddDeviceInfo,
   api.UpdateDeviceInfo,
@@ -24,6 +25,11 @@ const withoutEncryptionApi = [
   api.RegisterToken,
   api.UnregisterToken,
   api.SendNotification,
+  api.GetMenu,
+  api.getViewRequest,
+  api.GetARMTasks,
+  api.GetParemeterByTaskName,
+  api.PostTask,
 ];
 
 export {withoutEncryptionApi};

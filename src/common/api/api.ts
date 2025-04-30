@@ -1,5 +1,6 @@
 export const api = {
   ProfilePicture: '/',
+  ProfilePhoto: '/combined-user/update-profile-image/',
   AuthAppsLogin: '/login',
   AddDeviceInfo: '/devices/add-device',
   UpdateDeviceInfo: '/devices/inactive-device',
@@ -23,4 +24,9 @@ export const api = {
   RegisterToken: '/push-notification/register-token',
   UnregisterToken: '/push-notification/unregister-token',
   SendNotification: '/push-notification/send-notification',
+  GetMenu: '/mobile-menu',
+  getViewRequest: '/asynchronous-requests-and-task-schedules/view-requests/',
+  GetARMTasks: '/arm-tasks/show-tasks',
+  GetParemeterByTaskName: '/arm-tasks/task-params/',
+  PostTask: '/asynchronous-requests-and-task-schedules/create-task-schedule',
 };

@@ -114,7 +114,9 @@ const RenderMessageItem = observer(
             }
           });
         } else {
-          translateX.value = withSpring(0);
+          translateX.value = withSpring(0, {
+            duration: 1,
+          });
         }
       });
     const animatedStyle = useAnimatedStyle(() => {
@@ -285,7 +287,7 @@ const InboxScreen = observer(() => {
       const api_params = {
         url: api.ReceivedMessages + userInfo?.user_name + `/${currentPage}`,
         baseURL: url,
-        // isConsole: true,
+        isConsole: true,
         // isConsoleParams: true,
       };
       const res = await httpRequest(api_params, setIsLoading);
@@ -455,9 +457,9 @@ const InboxScreen = observer(() => {
       }
       footer={<PlusButton />}
       style={styles.container}>
+      <MessageGroups />
       <CustomFlatList
         key={messageStore.receivedMessages.length}
-        headerComponent={MessageGroups}
         data={messageStore.receivedMessages}
         RenderItems={({item}: any) => (
           <RenderMessageItem

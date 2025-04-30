@@ -1,0 +1,58 @@
+[
+  {
+    "menu_id": 1,
+    "menu_code": "PROCG",
+    "menu_name": "PROCG Mobile Menu",
+    "menu_desc": "PROCG Mobile Menu",
+    "menu_structure": [
+      {
+        "submenu": "Finance",
+        "subMenus": [
+          {
+            "name": "Risk Management",
+            "routeName": "Risk_Management"
+          },
+          {
+            "name": "Control Management",
+            "routeName": "Control_Management"
+          },
+          {
+            "name": "Issue Management",
+            "routeName": "Issue_Management"
+          }
+        ]
+      },
+      {
+        "submenu": "Tools",
+        "subMenus": [
+          {
+            "name": "Security Console",
+            "menuItems": [
+              {
+                "name": "Manage Users",
+                "routeName": "Manage_Users"
+              }
+            ]
+          },
+          {
+            "name": "Manage Data Sources",
+            "routeName": "Manage_Data_Sources"
+          }
+        ]
+      },
+      {
+        "submenu": "Asynchronous Requests and Task Schedules",
+        "subMenus": [
+          {
+            "name": "Run a Request",
+            "routeName": "Run_a_Request"
+          },
+          {
+            "name": "View Requests",
+            "routeName": "View_Requests"
+          }
+        ]
+      }
+    ]
+  }
+]

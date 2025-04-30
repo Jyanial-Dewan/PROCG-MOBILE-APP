@@ -50,7 +50,7 @@ export const httpRequest = async (params: any, cb: any) => {
         name: params?.mediaFile?.fileName || params?.mediaFile?.name,
         type: params?.mediaFile?.type,
       };
-      formData?.append('files', file);
+      formData?.append('profileImage', file);
 
       if (params?.mediaFile && params?.isParamsAndmediaFile) {
         config.url = cofigParam?.url;

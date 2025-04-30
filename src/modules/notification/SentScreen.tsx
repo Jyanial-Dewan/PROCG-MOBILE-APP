@@ -100,7 +100,9 @@ const RenderMessageItem = ({
           }
         });
       } else {
-        translateX.value = withSpring(0);
+        translateX.value = withSpring(0, {
+          duration: 1,
+        });
       }
     });
   const animatedStyle = useAnimatedStyle(() => {
@@ -285,8 +287,18 @@ const SentScreen = observer(() => {
         return;
       }
     },
-    [isFocused, currentPage, messageStore.sentMessages.length],
+    [
+      isFocused,
+      currentPage,
+      messageStore.sentMessages.length,
+      messageStore.refreshing,
+    ],
   );
+
+  const handleRefresh = () => {
+    messageStore.setRefreshing(true);
+    setCurrentPage(1);
+  };
 
   const handlePress = async (msgId: string, parentId: string) => {
     if (isLongPressed) {
@@ -401,9 +413,9 @@ const SentScreen = observer(() => {
       }
       footer={<PlusButton />}
       style={styles.container}>
+      <MessageGroups />
       <CustomFlatList
         key={messageStore.sentMessages.length}
-        headerComponent={MessageGroups}
         data={messageStore.sentMessages}
         RenderItems={({item}: any) => (
           <RenderMessageItem
@@ -424,6 +436,8 @@ const SentScreen = observer(() => {
         contentContainerStyle={
           messageStore.sentMessages.length === 0 ? styles.flexGrow : null
         }
+        refreshing={messageStore.refreshing}
+        onRefresh={handleRefresh}
         emptyItem={EmptyListItem}
       />
     </ContainerNew>
